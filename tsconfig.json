@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "declaration": true,
+    "declarationDir": "dist",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "noResolve": true,
+    "noEmit": false,
+    "noErrorTruncation": false
+  },
+  "include": [
+    "src/types.ts",
+    "src/RangeVisualizer.ts",
+    "src/RangeVisualizerView.ts",
+    "src/styles.ts",
+    "src/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+} 

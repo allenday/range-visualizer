@@ -1,0 +1,52 @@
+.range-visualizer__bar {
+  width: 500px;
+  height: 30px;
+  border-radius: 15px;
+  position: relative;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  overflow: visible;
+}
+
+.range-visualizer__indicator {
+  width: 2px;
+  height: 40px;
+  background: black;
+  position: absolute;
+  top: -5px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.range-visualizer__label {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.range-visualizer__value {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.range-visualizer__measurements {
+  margin-top: 40px;
+}
+
+.range-visualizer__measurements-list {
+  list-style: none;
+  padding: 0;
+}
+
+.range-visualizer__measurement-item {
+  margin: 5px 0;
+}
+
+/* ... other default styles ... */ 

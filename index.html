@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Range Visualizer Demo</title>
+    <script src="dist/index.js"></script>
+    <!-- Add custom CSS classes -->
+    <style>
+      .custom-bar {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background: #f8f8f8;
+      }
+      
+      .custom-indicator {
+        box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        border-radius: 1px;
+      }
+      
+      .custom-label {
+        font-weight: bold;
+        color: #666;
+      }
+      
+      .custom-measurements {
+        background: #f8f8f8;
+        padding: 10px;
+        border-radius: 4px;
+      }
+    </style>
+</head>
+<body>
+    <h1>Range Visualizer Demo</h1>
+    
+    <h2>Default View</h2>
+    <div id="demo1"></div>
+    
+    <h2>Minimal View (no labels)</h2>
+    <div id="demo2"></div>
+    
+    <h2>Custom Styling</h2>
+    <div id="demo3"></div>
+    
+    <script>
+        const { RangeVisualizer, RangeVisualizerView } = RangeVisualizerLib;
+        
+        function createVisualizer() {
+            const visualizer = new RangeVisualizer();
+            visualizer.addRange({name: "ok",      bounds: [{ min: 80, max: 120 }], color: "blue"});
+            visualizer.addRange({name: "info",    bounds: [{ min: 60, max: 80 }, { min: 120, max: 140 }], color: "green"});
+            visualizer.addRange({name: "warning", bounds: [{ min: 40, max: 60 }, { min: 140, max: 160 }], color: "yellow"});
+            visualizer.addRange({name: "error",   bounds: [{ min: 0, max: 40 }, { min: 160, max: undefined }], color: "red"});
+            
+            visualizer.addMeasurement({ time: "2023-01-01", value: 66 });
+            visualizer.addMeasurement({ time: "2024-01-01", value: 99 });
+            
+            return visualizer;
+        }
+
+        // Default view with all options enabled
+        const viz1 = createVisualizer();
+        const view1 = new RangeVisualizerView('demo1');
+        view1.addStyles();
+        view1.setGradient(viz1.getBackgroundGradient());
+        const measurements1 = viz1.getMeasurements();
+        view1.setIndicators(
+            measurements1,
+            measurements1.map(m => viz1.getIndicatorPosition(m.value)),
+            measurements1.map(m => viz1.getRangeForValue(m.value)?.name)
+        );
+        view1.updateMeasurements(measurements1);
+
+        // Minimal view
+        const viz2 = createVisualizer();
+        const view2 = new RangeVisualizerView('demo2', {
+            showDateLabels: false,
+            showValueLabels: false,
+            showRangeLabels: false,
+            showMeasurementsList: false,
+            barHeight: 20
+        });
+        view2.addStyles();
+        view2.setGradient(viz2.getBackgroundGradient());
+        const measurements2 = viz2.getMeasurements();
+        view2.setIndicators(
+            measurements2,
+            measurements2.map(m => viz2.getIndicatorPosition(m.value)),
+            measurements2.map(m => viz2.getRangeForValue(m.value)?.name)
+        );
+
+        // Custom styling
+        const viz3 = createVisualizer();
+        const view3 = new RangeVisualizerView('demo3', {
+            barWidth: '100%',  // Responsive width
+            barHeight: 40,
+            barBorderRadius: 20,
+            indicatorWidth: 3,
+            indicatorHeight: 50,
+            fontSize: 14,
+            fontFamily: 'Arial, sans-serif',
+            barClass: 'custom-bar',
+            indicatorClass: 'custom-indicator',
+            labelClass: 'custom-label',
+            measurementsClass: 'custom-measurements'
+        });
+        view3.addStyles();
+        view3.setGradient(viz3.getBackgroundGradient());
+        const measurements3 = viz3.getMeasurements();
+        view3.setIndicators(
+            measurements3,
+            measurements3.map(m => viz3.getIndicatorPosition(m.value)),
+            measurements3.map(m => viz3.getRangeForValue(m.value)?.name)
+        );
+        view3.updateMeasurements(measurements3);
+    </script>
+</body>
+</html> 
