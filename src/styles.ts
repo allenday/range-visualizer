@@ -2,6 +2,7 @@ export const defaultStyles = {
   container: 'range-visualizer',
   bar: 'range-visualizer__bar',
   indicator: 'range-visualizer__indicator',
+  indicatorsContainer: 'range-visualizer__indicators-container',
   label: 'range-visualizer__label',
   value: 'range-visualizer__value',
   measurements: 'range-visualizer__measurements',

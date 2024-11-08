@@ -76,7 +76,7 @@ export class RangeVisualizerView {
 
   private initializeElements(): void {
     this.bar.className = this.classNames.bar;
-    this.indicatorsContainer.className = this.classNames.indicator;
+    this.indicatorsContainer.className = this.classNames.indicatorsContainer;
     this.bar.appendChild(this.indicatorsContainer);
     this.measurementsList.className = this.classNames.measurements;
     
