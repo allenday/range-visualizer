@@ -26,7 +26,7 @@
             const viz1 = createVisualizer();
             const view1 = new RangeVisualizerView('demo1');
             view1.addStyles();
-            view1.setGradient(viz1.getBackgroundGradient());
+            view1.setSegments(viz1.getSegments());
             const measurements1 = viz1.getMeasurements();
             view1.setIndicators(
                 measurements1,
@@ -45,7 +45,7 @@
                 barHeight: 20
             });
             view2.addStyles();
-            view2.setGradient(viz2.getBackgroundGradient());
+            view2.setSegments(viz2.getSegments());
             const measurements2 = viz2.getMeasurements();
             view2.setIndicators(
                 measurements2,
@@ -56,20 +56,14 @@
             // Custom styling
             const viz3 = createVisualizer();
             const view3 = new RangeVisualizerView('demo3', {
-                barWidth: '100%',  // Responsive width
+                barWidth: '100%',
                 barHeight: 40,
                 barBorderRadius: 20,
-                indicatorWidth: 3,
-                indicatorHeight: 50,
                 fontSize: 14,
-                fontFamily: 'Arial, sans-serif',
-                barClass: 'custom-bar',
-                indicatorClass: 'custom-indicator',
-                labelClass: 'custom-label',
-                measurementsClass: 'custom-measurements'
+                fontFamily: 'Arial, sans-serif'
             });
             view3.addStyles();
-            view3.setGradient(viz3.getBackgroundGradient());
+            view3.setSegments(viz3.getSegments());
             const measurements3 = viz3.getMeasurements();
             view3.setIndicators(
                 measurements3,
@@ -77,30 +71,223 @@
                 measurements3.map(m => viz3.getRangeForValue(m.value)?.name)
             );
             view3.updateMeasurements(measurements3);
+
+            // Create segments with custom styling
+            const customStyledSegments = [
+                {start: 0, end: viz3.getIndicatorPosition(40), 
+                 name: 'error', color: '#ffcdd2'},  // Start at 0
+                {start: viz3.getIndicatorPosition(40), end: viz3.getIndicatorPosition(60), 
+                 name: 'warning', color: '#fff9c4'},
+                {start: viz3.getIndicatorPosition(60), end: viz3.getIndicatorPosition(80), 
+                 name: 'info', color: '#4CAF50', className: 'highlighted-segment'},
+                {start: viz3.getIndicatorPosition(80), end: viz3.getIndicatorPosition(120), 
+                 name: 'ok', color: '#bbdefb'},
+                {start: viz3.getIndicatorPosition(120), end: viz3.getIndicatorPosition(140), 
+                 name: 'info', color: '#c8e6c9'},
+                {start: viz3.getIndicatorPosition(140), end: viz3.getIndicatorPosition(160), 
+                 name: 'warning', color: '#fff9c4'},
+                {start: viz3.getIndicatorPosition(160), end: 100,  // End at 100
+                 name: 'error', color: '#ffcdd2'}
+            ];
+
+            view3.setSegments(customStyledSegments);
+
+            const measurements3b = viz3.getMeasurements();
+            view3.setIndicators(
+                measurements3b,
+                measurements3b.map(m => viz3.getIndicatorPosition(m.value)),
+                measurements3b.map(m => viz3.getRangeForValue(m.value)?.name)
+            );
+            view3.updateMeasurements(measurements3b);
+
+            // Boundary indicators demo
+            const viz4 = createVisualizer();
+            const view4 = new RangeVisualizerView('demo4', {
+                showBoundaryIndicators: true,
+                barHeight: 40  // Make it a bit taller to show boundaries better
+            });
+            view4.addStyles();
+            view4.setSegments(viz4.getSegments());
+
+            // Add boundary indicators for each range boundary
+            view4.setBoundaryIndicators([
+                {value: viz4.getIndicatorPosition(0), label: '0'},   // Add start
+                {value: viz4.getIndicatorPosition(40), label: '40'},
+                {value: viz4.getIndicatorPosition(60), label: '60'},
+                {value: viz4.getIndicatorPosition(80), label: '80'},
+                {value: viz4.getIndicatorPosition(120), label: '120'},
+                {value: viz4.getIndicatorPosition(140), label: '140'},
+                {value: viz4.getIndicatorPosition(160), label: '160'}
+            ]);
+
+            const measurements4 = viz4.getMeasurements();
+            view4.setIndicators(
+                measurements4,
+                measurements4.map(m => viz4.getIndicatorPosition(m.value)),
+                measurements4.map(m => viz4.getRangeForValue(m.value)?.name)
+            );
+            view4.updateMeasurements(measurements4);
+
+            // Segment labels demo
+            const viz5 = createVisualizer();
+            const view5 = new RangeVisualizerView('demo5', {
+                showSegmentLabels: true
+            });
+            view5.addStyles();
+
+            // Create segments array with positions and names, adding colors
+            const labeledSegments = [
+                {start: viz5.getIndicatorPosition(0), end: viz5.getIndicatorPosition(40), 
+                 name: 'error', color: 'red'},
+                {start: viz5.getIndicatorPosition(40), end: viz5.getIndicatorPosition(60), 
+                 name: 'warning', color: 'yellow'},
+                {start: viz5.getIndicatorPosition(60), end: viz5.getIndicatorPosition(80), 
+                 name: 'info', color: 'green'},
+                {start: viz5.getIndicatorPosition(80), end: viz5.getIndicatorPosition(120), 
+                 name: 'ok', color: 'blue'},
+                {start: viz5.getIndicatorPosition(120), end: viz5.getIndicatorPosition(140), 
+                 name: 'info', color: 'green'},
+                {start: viz5.getIndicatorPosition(140), end: viz5.getIndicatorPosition(160), 
+                 name: 'warning', color: 'yellow'},
+                {start: viz5.getIndicatorPosition(160), end: 100, 
+                 name: 'error', color: 'red'}
+            ];
+
+            view5.setSegments(labeledSegments);
+
+            const measurements5 = viz5.getMeasurements();
+            view5.setIndicators(
+                measurements5,
+                measurements5.map(m => viz5.getIndicatorPosition(m.value)),
+                measurements5.map(m => viz5.getRangeForValue(m.value)?.name)
+            );
+
+            // Alternating boundary indicators demo
+            const viz6 = createVisualizer();
+            const view6 = new RangeVisualizerView('demo6');
+            view6.addStyles();
+
+            const segmentsWithAlternatingBoundaries = [
+                {start: viz6.getIndicatorPosition(0), end: viz6.getIndicatorPosition(40), 
+                 name: 'error', color: 'red', showBoundary: true, value: 0},
+                {start: viz6.getIndicatorPosition(40), end: viz6.getIndicatorPosition(60), 
+                 name: 'warning', color: 'yellow', showBoundary: false, value: 40},
+                {start: viz6.getIndicatorPosition(60), end: viz6.getIndicatorPosition(80), 
+                 name: 'info', color: 'green', showBoundary: true, value: 60},
+                {start: viz6.getIndicatorPosition(80), end: viz6.getIndicatorPosition(120), 
+                 name: 'ok', color: 'blue', showBoundary: false, value: 80},
+                {start: viz6.getIndicatorPosition(120), end: viz6.getIndicatorPosition(140), 
+                 name: 'info', color: 'green', showBoundary: true, value: 120},
+                {start: viz6.getIndicatorPosition(140), end: viz6.getIndicatorPosition(160), 
+                 name: 'warning', color: 'yellow', showBoundary: false, value: 140},
+                {start: viz6.getIndicatorPosition(160), end: 100, 
+                 name: 'error', color: 'red', showBoundary: true, value: 160}
+            ];
+
+            view6.setSegments(segmentsWithAlternatingBoundaries);
+
+            // Alternating segment labels demo
+            const viz7 = createVisualizer();
+            const view7 = new RangeVisualizerView('demo7');
+            view7.addStyles();
+
+            const segmentsWithAlternatingLabels = [
+                {start: viz7.getIndicatorPosition(0), end: viz7.getIndicatorPosition(40), 
+                 name: 'error', color: 'red', showLabel: true},
+                {start: viz7.getIndicatorPosition(40), end: viz7.getIndicatorPosition(60), 
+                 name: 'warning', color: 'yellow', showLabel: false},
+                {start: viz7.getIndicatorPosition(60), end: viz7.getIndicatorPosition(80), 
+                 name: 'info', color: 'green', showLabel: true},
+                {start: viz7.getIndicatorPosition(80), end: viz7.getIndicatorPosition(120), 
+                 name: 'ok', color: 'blue', showLabel: false},
+                {start: viz7.getIndicatorPosition(120), end: viz7.getIndicatorPosition(140), 
+                 name: 'info', color: 'green', showLabel: true},
+                {start: viz7.getIndicatorPosition(140), end: viz7.getIndicatorPosition(160), 
+                 name: 'warning', color: 'yellow', showLabel: false},
+                {start: viz7.getIndicatorPosition(160), end: 100, 
+                 name: 'error', color: 'red', showLabel: true}
+            ];
+
+            view7.setSegments(segmentsWithAlternatingLabels);
+
+            const measurements7 = viz7.getMeasurements();
+            view7.setIndicators(
+                measurements7,
+                measurements7.map(m => viz7.getIndicatorPosition(m.value)),
+                measurements7.map(m => viz7.getRangeForValue(m.value)?.name)
+            );
+
+            // Rounded view
+            const viz1b = createVisualizer();
+            const view1b = new RangeVisualizerView('demo1b', {
+                barBorderRadius: 15  // Add rounded corners
+            });
+            view1b.addStyles();
+            view1b.setSegments(viz1b.getSegments());
+            const measurements1b = viz1b.getMeasurements();
+            view1b.setIndicators(
+                measurements1b,
+                measurements1b.map(m => viz1b.getIndicatorPosition(m.value)),
+                measurements1b.map(m => viz1b.getRangeForValue(m.value)?.name)
+            );
         });
     </script>
     <!-- Add custom CSS classes -->
     <style>
-      .custom-bar {
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        background: #f8f8f8;
-      }
-      
-      .custom-indicator {
-        box-shadow: 0 0 4px rgba(0,0,0,0.2);
-        border-radius: 1px;
-      }
-      
-      .custom-label {
-        font-weight: bold;
-        color: #666;
-      }
-      
-      .custom-measurements {
-        background: #f8f8f8;
-        padding: 10px;
-        border-radius: 4px;
-      }
+        /* Custom styling for specific instances */
+        .range-visualizer__bar-3 {
+            position: relative;
+            overflow: visible !important;
+        }
+        
+        /* Target the indicator text for the elevated segment */
+        .range-visualizer__bar-3 .range-visualizer__indicator[style*="left: 37.5%"] .range-visualizer__label {
+            font-size: 16px;
+            font-weight: bold;
+            bottom: -35px;
+            color: #333;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Create the elevated segment effect for the green segment */
+        .range-visualizer__bar-3::after {
+            content: '';
+            position: absolute;
+            left: 34.1%;
+            width: 11.34%;
+            height: 60px;
+            top: -15px;
+            background: #00AF50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        /* Keep indicators above the elevated segment */
+        .range-visualizer__bar-3 .range-visualizer__indicator {
+            z-index: 2;
+        }
+
+        /* Custom styling for demo purposes */
+        .custom-bar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #f8f8f8;
+        }
+        
+        .custom-indicator {
+            box-shadow: 0 0 4px rgba(0,0,0,0.2);
+            border-radius: 1px;
+        }
+        
+        .custom-label {
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .custom-measurements {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -114,5 +301,20 @@
     
     <h2>Custom Styling</h2>
     <div id="demo3"></div>
+    
+    <h2>With Boundary Indicators</h2>
+    <div id="demo4"></div>
+    
+    <h2>With Segment Labels</h2>
+    <div id="demo5"></div>
+
+    <h2>Alternating Boundary Indicators</h2>
+    <div id="demo6"></div>
+
+    <h2>Alternating Segment Labels</h2>
+    <div id="demo7"></div>
+
+    <h2>Rounded View</h2>
+    <div id="demo1b"></div>
 </body>
 </html> 

@@ -1,58 +1,99 @@
+/* Base bar container */
 .range-visualizer__bar {
   width: 500px;
   height: 30px;
-  border-radius: 15px;
+  border-radius: 0;
   position: relative;
-  margin: 20px 0;
+  margin: 30px 0;
   border: 1px solid #ccc;
   overflow: visible;
 }
 
-.range-visualizer__indicator {
-  width: 2px;
-  height: 40px;
-  background: black;
+/* Individual segments within the bar */
+.range-visualizer__segment {
   position: absolute;
-  top: -5px;
-  transform: translateX(-50%);
-  z-index: 2;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: all 0.2s ease;
 }
 
-.range-visualizer__label {
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 12px;
-}
-
-.range-visualizer__value {
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 12px;
-}
-
-.range-visualizer__measurements {
-  margin-top: 40px;
-}
-
-.range-visualizer__measurements-list {
-  list-style: none;
-  padding: 0;
-}
-
-.range-visualizer__measurement-item {
-  margin: 5px 0;
-}
-
+/* Indicators container */
 .range-visualizer__indicators-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* ... other default styles ... */ 
+/* Measurement indicators */
+.range-visualizer__indicator {
+  width: 1px;
+  height: 10px;
+  background: #666;
+  position: absolute;
+  bottom: -10px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Measurement labels */
+.range-visualizer__label {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: pre;
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+}
+
+/* Boundary indicators */
+.range-visualizer__boundary-indicator {
+  width: 1px;
+  height: 10px;
+  background: #666;
+  position: absolute;
+  top: -10px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* Boundary values */
+.range-visualizer__boundary-value {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* Segment labels */
+.range-visualizer__segment-label {
+  position: absolute;
+  top: -5px;
+  transform: translate(-50%, -100%);
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Measurements list */
+.range-visualizer__measurements {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.range-visualizer__measurements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.range-visualizer__measurement-item {
+  margin: 5px 0;
+}

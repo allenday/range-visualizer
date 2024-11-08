@@ -1,15 +1,15 @@
 # Range Visualizer
 
-A flexible TypeScript library for visualizing ranges and measurements with configurable styling. Perfect for displaying health metrics, performance indicators, or any other data that needs to be visualized against defined ranges.
+A flexible TypeScript library for visualizing ranges and measurements.
 
 ## Features
-
-- Multiple range definitions with custom colors
-- Support for overlapping and unbounded ranges
-- Multiple measurement points with timestamps
-- Fully customizable styling
-- Responsive design support
-- TypeScript support with full type definitions
+- Segment-based visualization with individual styling
+- Measurement indicators with timestamps
+- Boundary indicators with labels
+- Segment labels
+- Instance-specific styling
+- Responsive design
+- TypeScript support
 
 ## Installation
 
@@ -21,115 +21,84 @@ npm install range-visualizer
 
 ```typescript
 import { RangeVisualizer, RangeVisualizerView } from 'range-visualizer';
-import 'range-visualizer/dist/styles.css'; // Optional default styles
 
-// Create visualizer and add ranges
+// Create the visualizer
 const visualizer = new RangeVisualizer();
 
-// Add ranges with bounds
+// Add ranges
 visualizer.addRange({
-    name: "normal",
-    bounds: [{ min: 80, max: 120 }],
-    color: "green"
-});
-
-visualizer.addRange({
-    name: "warning",
-    bounds: [
-        { min: 60, max: 80 },   // Lower warning range
-        { min: 120, max: 140 }  // Upper warning range
-    ],
-    color: "yellow"
-});
-
-visualizer.addRange({
-    name: "critical",
-    bounds: [
-        { min: undefined, max: 60 },  // Lower unbounded range
-        { min: 140 }                  // Upper unbounded range
-    ],
-    color: "red"
+  name: "ok",
+  bounds: [{ min: 80, max: 120 }],
+  color: "blue"
 });
 
 // Add measurements
-visualizer.addMeasurement({ time: "2024-01-01", value: 90 });
-visualizer.addMeasurement({ time: "2024-01-02", value: 110 });
+visualizer.addMeasurement({
+  time: "2023-01-01",
+  value: 66
+});
 
-// Create and configure view
-const view = new RangeVisualizerView('container');
+// Create the view
+const view = new RangeVisualizerView('container-id');
 view.addStyles();
-view.setGradient(visualizer.getBackgroundGradient());
+view.setSegments(visualizer.getSegments());
 
-
-// Display measurements
+// Add measurement indicators
 const measurements = visualizer.getMeasurements();
 view.setIndicators(
-    measurements,
-    measurements.map(m => visualizer.getIndicatorPosition(m.value)),
-    measurements.map(m => visualizer.getRangeForValue(m.value)?.name)
+  measurements,
+  measurements.map(m => visualizer.getIndicatorPosition(m.value)),
+  measurements.map(m => visualizer.getRangeForValue(m.value)?.name)
 );
 ```
 
-## Styling Options
+## Styling
 
-### Default Styling
-Import the default CSS:
+Each element has a unique class name for styling:
 
-```typescript
-import 'range-visualizer/dist/styles.css';
+```css
+.range-visualizer__bar { /* Bar styles */ }
+.range-visualizer__segment { /* Segment styles */ }
+.range-visualizer__indicator { /* Indicator styles */ }
+.range-visualizer__label { /* Label styles */ }
 ```
 
-### Custom Classes
-Override with your own CSS classes:
+Instance-specific styling:
+```css
+/* Target specific instance */
+.range-visualizer__bar-1 { /* Styles for first instance */ }
+
+/* Target specific segment */
+.range-visualizer__segment[data-name="ok"] { /* Styles for "ok" segments */ }
+```
+
+## Configuration Options
 
 ```typescript
-const view = new RangeVisualizerView('container', {
-    classNames: {
-        bar: 'my-custom-bar',
-        indicator: 'my-custom-indicator',
-        label: 'my-custom-label',
-        value: 'my-custom-value',
-        measurements: 'my-custom-measurements'
-    }
+const view = new RangeVisualizerView('container-id', {
+  // Bar options
+  barWidth: 500,          // Width in px or %
+  barHeight: 30,          // Height in px
+  barBorderRadius: 0,     // Border radius in px
+  
+  // Indicator options
+  showDateLabels: true,   // Show date labels
+  showValueLabels: true,  // Show value labels
+  showRangeLabels: true,  // Show range labels
+  
+  // Boundary options
+  showBoundaryIndicators: false,  // Show boundary markers
+  showSegmentLabels: false,       // Show segment labels
+  
+  // Styling options
+  fontSize: 12,
+  fontFamily: 'inherit'
 });
-```
-
-### Configuration Options
-
-```typescript
-interface ViewOptions {
-    // Layout
-    barWidth?: number | string;  // e.g., 500 or '100%'
-    barHeight?: number;
-    barBorderRadius?: number;
-    
-    // Display
-    showDateLabels?: boolean;
-    showValueLabels?: boolean;
-    showRangeLabels?: boolean;
-    showMeasurementsList?: boolean;
-    
-    // Typography
-    fontSize?: number;
-    fontFamily?: string;
-    dateAngle?: number;
-    
-    // Custom Classes
-    classNames?: {
-        container?: string;
-        bar?: string;
-        indicator?: string;
-        label?: string;
-        value?: string;
-        measurements?: string;
-    }
-}
 ```
 
 ## Range Types
 
 ### Bounded Range
-
 ```typescript
 {
     name: "normal",
@@ -139,7 +108,6 @@ interface ViewOptions {
 ```
 
 ### Multiple Bounds
-
 ```typescript
 {
     name: "warning",
@@ -152,7 +120,6 @@ interface ViewOptions {
 ```
 
 ### Unbounded Range
-
 ```typescript
 {
     name: "critical",
@@ -163,6 +130,17 @@ interface ViewOptions {
 }
 ```
 
+## Examples
+
+See index.html for complete examples including:
+- Basic visualization
+- Minimal view (no labels)
+- Custom styling
+- Boundary indicators
+- Segment labels
+- Alternating indicators
+- Rounded corners
+
 ## Browser Support
 
 Works in all modern browsers (Chrome, Firefox, Safari, Edge).
@@ -172,8 +150,10 @@ Works in all modern browsers (Chrome, Firefox, Safari, Edge).
 ```bash
 # Install dependencies
 npm install
+
 # Build
 npm run build
+
 # Watch mode
 npm run watch
 ```
